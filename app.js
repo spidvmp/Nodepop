@@ -29,7 +29,11 @@ app.use('/', routes);
 app.use('/users', users);
 
 //incluyo la API V1
-app.use('/apiV1/', require('./routes/apiV1'));
+app.use('/apiV1/lista', require('./routes/apiV1/lista'));
+app.use('/apiV1/tags', require('./routes/apiV1/tags'));
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
