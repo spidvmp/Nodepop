@@ -22,8 +22,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//incluyo MongoDB
+var dbMongo=require('./lib/dbMongo.js');
+
 app.use('/', routes);
 app.use('/users', users);
+
+//incluyo la API V1
+app.use('/apiV1/', require('./routes/apiV1'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
