@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //incluyo MongoDB
-var dbMongo=require('./lib/dbMongo.js');
+var dbMongo=require('./lib/mongoDB.js');
 
 app.use('/', routes);
 app.use('/users', users);
