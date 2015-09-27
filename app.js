@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+//var users = require('./routes/users');
 
 var app = express();
 
@@ -26,11 +26,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 var dbMongo=require('./lib/mongoDB.js');
 
 app.use('/', routes);
-app.use('/users', users);
+//app.use('/users', users);
 
 //incluyo la API V1
 app.use('/apiV1/lista', require('./routes/apiV1/lista'));
 app.use('/apiV1/tags', require('./routes/apiV1/tags'));
+app.use('/apiV1/adduser', require('./routes/apiV1/adduser'));
 
 
 

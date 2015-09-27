@@ -8,14 +8,15 @@ var User = require('../../Model/User');
 
 
 //el agente nos lo envian por post
-router.post('/addUser', function(req, res, next){
+router.post('/', function(req, res, next){
+
 
     //sacamos los datos de login y passwrod que vienen en el body
     var nuevo = req.body;
 
-    console.log('nuevo=', nuevo);
+    //console.log('nuevo=', nuevo, 'body=',req.body.login);
 
-    var agt= new Agente(nuevo);
+    var agt= new User(nuevo);
 
     //ahora grabamos el nuevo agente en la BD
     agt.save( function(err, creado) {
@@ -30,3 +31,5 @@ router.post('/addUser', function(req, res, next){
 
 
 });
+
+module.exports = router;

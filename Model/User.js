@@ -33,6 +33,6 @@ agenteSchema.methods.sumaEdad = function(cuanto){
 
 
 //lo exportamos
-var Agente = mongoose.model('Agente', agenteSchema);
+var User = mongoose.model('User', userSchema);
 
-module.exports = Agente;
+module.exports = User;
