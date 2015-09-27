@@ -18,15 +18,37 @@ router.post('/', function(req, res, next){
 
     var agt= new User(nuevo);
 
-    //ahora grabamos el nuevo agente en la BD
-    agt.save( function(err, creado) {
-        if (err) {
-            return res.json({ok: false, error: err, txt: 'No se puede crear'});
+    //primero buscamos a ver si el login existe, si existe no se puede crear otro igual
+    //ejecuto el metodo estatico definido en Model/User.js
+    User.userExist({login: nuevo.login}, function(err, rows){
+        if ( err ){
+            return res.json({ok:false, error:err, txt:'Error al buscar el usuario para ver si existe'});
+        }
+        console.log('rows=',rows.length,' nuevo=',nuevo,' rows=',rows);
+        //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
+        if ( rows.length === 0) {
+
+            //ahora grabamos el nuevo agente en la BD
+            agt.save( function(err, creado) {
+                if (err) {
+                    return res.json({ok: false, error: err, txt: 'No se puede crear'});
+                }
+
+                //se ha insertado correctamente
+                res.json({ok: true, agente: creado});
+            });
+
+
+        } else {
+            //usuario repetido
+            res.json({ok:false, txt:'Usuario ya existe'});
         }
 
-        //se ha insertado correctamente
-        res.json({ok: true, agente: creado});
+
+
     });
+
+
 
 
 

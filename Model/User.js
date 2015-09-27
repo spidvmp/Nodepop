@@ -10,27 +10,23 @@ var userSchema = mongoose.Schema({
 });
 
 
-//definimos el metodo estatico add User
-userSchema.statics.add=function(criterios, callBack){
-    //esto inserta una agente. En el criterio se incluyen el login y password
-    var agt= new Agente(criterios);
+//definimos un metodo estatico para que se busque si existe un login que ya estuviera creado
+userSchema.statics.userExist=function(criterio, callBack){
+console.log('userExist critero=',criterio);
+    //defino la query a buscar, basicamente sera que el login exista
+    var query = User.find(criterio);
+    //ejecuto la query
+    query.exec(function(err, rows){
+        if ( err ){
+            //ha habido algun error
+            return callBack(err);
+        }
+        //devuelvo lo que haya encontrado
+        return callBack(null, rows);
+    });
+
 
 };
-
-/*
-//definimos metodo de instancia, le ponemos get, porqur hemos querido, es el nombre del metodo
-agenteSchema.methods.get = function(idAgente, callBack){
-    console.log(this);
-    //se supone que tenemos un agente cargado, ya que es metodo de instancia. En this tengo todo
-    return callBack(null,this);
-}
-
-agenteSchema.methods.sumaEdad = function(cuanto){
-    this.age = this.age + 1;
-    return this;
-}
-*/
-
 
 //lo exportamos
 var User = mongoose.model('User', userSchema);
