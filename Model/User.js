@@ -13,21 +13,11 @@ var userSchema = mongoose.Schema({
 //definimos el metodo estatico add User
 userSchema.statics.add=function(criterios, callBack){
     //esto inserta una agente. En el criterio se incluyen el login y password
-    var query= Agente.find(criterios);
+    var agt= new Agente(criterios);
 
-    //ahora puedo modificar el query con alguna cosa:
-    query.sort('name');
-    //ahora ejecuto, aqui pongo el callback
-    query.exec( function(err, rows){
-        if (err){
-            return callBack(err);
-        }
-
-        return callBack(null,rows);
-    });
 };
 
-
+/*
 //definimos metodo de instancia, le ponemos get, porqur hemos querido, es el nombre del metodo
 agenteSchema.methods.get = function(idAgente, callBack){
     console.log(this);
@@ -39,7 +29,7 @@ agenteSchema.methods.sumaEdad = function(cuanto){
     this.age = this.age + 1;
     return this;
 }
-
+*/
 
 
 //lo exportamos
