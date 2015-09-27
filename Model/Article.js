@@ -7,7 +7,7 @@ var articleSchema = mongoose.Schema({
     name: String,
     sale: Boolean,
     price: Number,
-    pic: {data: Buffer, contentType: String}
+    pic: {data: Buffer, contentType: String},
     tags: String
 });
 
@@ -20,16 +20,17 @@ var avatar = {
     */
 
 //definimos el motodo estatico lista
-articleSchema.statics.lista=function(creiterios, callBack){
+articleSchema.statics.lista=function(criterios, callBack){
     //hay que enviarlo paginado, asi que en los criterios hay que mostrar la pagina a mostrar
     var query=Article.find(criterios);
+    query.sort('name');
 
     //ejecuto y pongo el callback
     query.exec(function(err, rows){
         if ( err ) {
             return callBack(err);
         }
-
+console.log("Resultado:", rows);
         return callBack(null,rows);
     });
 
