@@ -4,9 +4,16 @@ var mongoose = require('mongoose');
 
 //definomos Schema de usuario
 var userSchema = mongoose.Schema({
+    /*
+    name: nombre del usuario
+    login: login del usuario, sera un email
+    password: password del usuario
+    uuid: objeto que contiene los diferentes uuids de los dispositivos desde los que se conecta
+     */
+    name: String,
     login: String,
     password: String,
-    token: String
+    uuid: Object
 });
 
 
