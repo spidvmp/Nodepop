@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require('../../Model/User');
+var config = require('../../config');
 
 //comprobamos cada peticion que se hace, tiene que venir con el token
 //middleware que comprueba cada peticion y verifica que el token que nos dan es valido
@@ -15,7 +16,7 @@ router.get('/', function (req, res, next){
     //comprobamos si lo tenemos
     if ( token ){
 
-        jwt.verify(token,'oiwjdnfpu29j', function(err, decodec){
+        jwt.verify(token,config.secretToken, function(err, decodec){
 
             if (err) {
 
@@ -54,7 +55,8 @@ router.post('/authenticate', function(req,res){
         if ( rows.length === 1) {
 
             //hemos encontrado el registro, generamos el token
-            var token = jwt.sign({_id:'123',name:'pepe', password:'mj892j4m9283'}, 'oiwjdnfpu29j', {expiresInMinutes:120});
+
+            var token = jwt.sign(rows, config.secretToken, {expiresInMinutes:120});
 
             //se lo pasamos el usuario
             res.json({ok:true, token:token});

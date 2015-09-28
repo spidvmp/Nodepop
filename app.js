@@ -30,9 +30,7 @@ app.use('/', routes);
 
 //incluyo la API V1
 app.use('/apiV1/adduser', require('./routes/apiV1/adduser'));
-console.log('app, voy a pasar por validate');
 app.use('/apiV1' , require('./routes/apiV1/validate'));
-console.log('app, salgo de validate');
 app.use('/apiV1/lista', require('./routes/apiV1/lista'));
 app.use('/apiV1/tags', require('./routes/apiV1/tags'));
 
