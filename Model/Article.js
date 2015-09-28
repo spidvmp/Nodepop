@@ -24,15 +24,16 @@ var articleSchema = mongoose.Schema({
 articleSchema.statics.lista=function(criterios, callBack){
     //hay que enviarlo paginado, asi que en los criterios hay que mostrar la pagina a mostrar
     var query=Article.find(criterios);
-    //lo ordeno primero por articulos que se venden y luego por nombre
-    query.sort({sale:1, name:-1});
+    //lo ordeno primero por articulos que se venden y luego por nombre, ordeno por -1 porque el true o false lo toma como literal
+    //y deberia ordenar por sale=true, la t en mayor que la f de false
+    query.sort({sale:-1, name:-1});
 
     //ejecuto y pongo el callback
     query.exec(function(err, rows){
         if ( err ) {
             return callBack(err);
         }
-console.log("Resultado:", rows);
+
         return callBack(null,rows);
     });
 

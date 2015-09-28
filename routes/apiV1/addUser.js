@@ -24,7 +24,6 @@ router.post('/', function(req, res, next){
         if ( err ){
             return res.json({ok:false, error:err, txt:'Error al buscar el usuario para ver si existe'});
         }
-        console.log('rows=',rows.length,' nuevo=',nuevo,' rows=',rows);
         //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
         if ( rows.length === 0) {
 
@@ -37,7 +36,6 @@ router.post('/', function(req, res, next){
                 //se ha insertado correctamente
                 res.json({ok: true, agente: creado});
             });
-
 
         } else {
             //usuario repetido

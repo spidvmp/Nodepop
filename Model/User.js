@@ -12,7 +12,6 @@ var userSchema = mongoose.Schema({
 
 //definimos un metodo estatico para que se busque si existe un login que ya estuviera creado
 userSchema.statics.userExist=function(criterio, callBack){
-console.log('userExist critero=',criterio);
     //defino la query a buscar, basicamente sera que el login exista
     var query = User.find(criterio);
     //ejecuto la query

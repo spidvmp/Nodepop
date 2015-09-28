@@ -29,9 +29,11 @@ app.use('/', routes);
 //app.use('/users', users);
 
 //incluyo la API V1
+app.use('/apiV1/adduser', require('./routes/apiV1/adduser'));
+app.use('/apiV1' , require('./routes/apiV1/validate'));
 app.use('/apiV1/lista', require('./routes/apiV1/lista'));
 app.use('/apiV1/tags', require('./routes/apiV1/tags'));
-app.use('/apiV1/adduser', require('./routes/apiV1/adduser'));
+
 
 
 
