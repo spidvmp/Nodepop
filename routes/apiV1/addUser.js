@@ -14,8 +14,6 @@ router.post('/', function(req, res, next){
     //sacamos los datos de login y passwrod que vienen en el body
     var nuevo = req.body;
 
-    //console.log('nuevo=', nuevo, 'body=',req.body.login);
-
     var agt= new User(nuevo);
 
     //primero buscamos a ver si el login existe, si existe no se puede crear otro igual
