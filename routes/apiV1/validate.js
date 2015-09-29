@@ -5,18 +5,18 @@ var jwt = require('jsonwebtoken');
 var User = require('../../Model/User');
 var config = require('../../config');
 
-//comprobamos cada peticion que se hace, tiene que venir con el token
+
 //middleware que comprueba cada peticion y verifica que el token que nos dan es valido
 router.get('/', function (req, res, next){
 
     //saco el token que viene en el body
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log("validate / con token ", token);
+    //console.log("validate / con token ", token);
 
     //comprobamos si lo tenemos
     if ( token ){
 
-        jwt.verify(token,config.secretToken, function(err, decodec){
+        jwt.verify(token,config.secretToken, function(err, decoded){
 
             if (err) {
 
@@ -25,6 +25,7 @@ router.get('/', function (req, res, next){
             }
 
             //esta autenticado, seguir por otros middlewares
+            req.decoded=decoded;
             next();
 
         });
@@ -51,18 +52,25 @@ router.post('/authenticate', function(req,res){
             return res.json({ok:false, error:err, txt:'Usuario erroneo'});
 
         }
+
         //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
         if ( rows.length === 1) {
 
             //hemos encontrado el registro, generamos el token
 
-            var token = jwt.sign(rows, config.secretToken, {expiresInMinutes:120});
+            var token = jwt.sign(rows, config.secretToken, {expiresInMinutes:config.expiresInMinutes});
 
             //se lo pasamos el usuario
             res.json({ok:true, token:token});
 
 
         } else {
+            if ( rows.length === 0 ) {
+
+                //no encontro el login y pass
+                return res.json({ok:false, error:err, txt:'Usuario erroneo'});
+
+            }
 
             //han habido mas de una respuesta, esto no deberia pasar, devuelvo error y ademas lo pongo en la consola
             console.log("Encontradas mas de una entrada en usuarios. User=",req.body.login," passwd=",req.body.password);

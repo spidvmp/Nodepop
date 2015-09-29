@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 //requiere al modelo
 var Article = require('../../Model/Article');
 
+//le hago pasar por el middleware
 router.get('/',require('./validate'));
 
 //listado de paginado

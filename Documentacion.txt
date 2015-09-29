@@ -1,0 +1,17 @@
+Documentacion ApiV1
+
+Añadir usuario:
+Ruta: apiV1/addUser
+Parametros: login, password, name
+Metodo: Post
+Desde la parte cliente se toman los datos de nombre, email y password para dar de alta a un nuevo usuario.
+El email se usara como login, no pudiendo haber 2 emails iguales, pero si pueden haber nombres repetidos.
+Esta basado en el email como clave principal y desde el cliente se habra comprobado que es un email. El dato ya viene supuestamente correcto
+El cliente ha de llamar a apiV1/addUser y pasar por post {login, password, name}
+Se devolvera un json con los sigientes datos:
+ok: true o false si ha se ha dado de alta al usuario o no
+error: error generado, en el caso de que ok sea false
+txt: texto del error, en el caso de que ok sea false
+token: se envia el token, en el caso de que ok sea true
+
+

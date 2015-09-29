@@ -2,6 +2,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+var config = require('../../config.js');
 
 //llamo al modelo de usuario
 var User = require('../../Model/User');
@@ -11,10 +13,12 @@ var User = require('../../Model/User');
 router.post('/', function(req, res, next){
 
 
-    //sacamos los datos de login y passwrod que vienen en el body
+    //sacamos los datos que vienen en el body
+    //tenemos que recibir: name, login (email), password
     var nuevo = req.body;
 
     var agt= new User(nuevo);
+
 
     //primero buscamos a ver si el login existe, si existe no se puede crear otro igual
     //ejecuto el metodo estatico definido en Model/User.js
@@ -32,7 +36,11 @@ router.post('/', function(req, res, next){
                 }
 
                 //se ha insertado correctamente
-                res.json({ok: true, agente: creado});
+                var token = jwt.sign(nuevo, config.secretToken, {expiresInMinutes:config.expiresInMinutes});
+
+                //se lo pasamos el usuario
+                res.json({ok:true, token:token});
+
             });
 
         } else {
