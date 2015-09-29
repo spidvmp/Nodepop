@@ -48,14 +48,15 @@ router.post('/', function(req, res, next){
             res.json({ok:false, txt:'Usuario ya existe'});
         }
 
-
-
     });
 
+});
 
+router.use(require('./validate'));
 
-
-
+router.put('/adduuid', function(req,res,next){
+   console.log("estoy en el put");
+    res.json({ok:true});
 });
 
 module.exports = router;

@@ -6,8 +6,8 @@ var User = require('../../Model/User');
 var config = require('../../config');
 
 
-//middleware que comprueba cada peticion y verifica que el token que nos dan es valido
-router.get('/', function (req, res, next){
+//middleware que comprueba cada peticion y verifica que el token que nos dan es valido, todo lo que llega pasa por aqui
+router.use( function (req, res, next){
 
     //saco el token que viene en el body
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -35,7 +35,36 @@ router.get('/', function (req, res, next){
 
     }
 });
+/*
+router.put('/', function (req, res, next){
 
+    //saco el token que viene en el body
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log("validate / con token ", token);
+
+    //comprobamos si lo tenemos
+    if ( token ){
+
+        jwt.verify(token,config.secretToken, function(err, decoded){
+
+            if (err) {
+
+                return res.status(401).json({ok:false, error:'No tienes permiso'});
+
+            }
+
+            //esta autenticado, seguir
+            next();
+
+        });
+
+    } else {
+
+        return res.status(401).json({ok:false, error:'No tiene permiso.'});
+
+    }
+});
+*/
 
 router.post('/authenticate', function(req,res){
     /* una vez que tenemos login y pass, se llama a /authenticate y por post se le envia el login y passwd.
