@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
     name: nombre del usuario
     login: login del usuario, sera un email
     password: password del usuario
-    uuid: objeto que contiene los diferentes uuids de los dispositivos desde los que se conecta
+    uuid: objeto que contiene los diferentes uuids de los dispositivos desde los que se conecta y el so al que pertenece
      */
     name: String,
     login: String,

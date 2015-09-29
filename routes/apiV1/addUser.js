@@ -56,7 +56,59 @@ router.use(require('./validate'));
 
 router.put('/adduuid', function(req,res,next){
    console.log("estoy en el put");
-    res.json({ok:true});
+    var tokenpush = req.body;
+    var so;
+
+    //compruebo si tengo el tokenpush
+    if ( tokenpush.tokenpush ){
+        console.log('no tengo el token');
+
+        //busco el usuario mediante el login y pass que me pasan
+        User.userExist({login: tokenpush.login, password: tokenpush.password}, function(err, rows){
+            if ( err ){
+                return res.json({ok:false, error:err, txt:'Error al buscar el usuario'});
+            }
+            //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
+            if ( rows.length === 1) {
+                //tengo al usuario, compruebo si me han pasado parametro so
+
+                if ( tokenpush.so ) {
+                    so=tokenpush.so;
+                } else {
+                    //lo intento sacar de la cabecera
+                    if ( req.get('User-Agent').match(/Android/i) ){
+                        so='Android';
+                    } else if ( req.get('User-Agent').match(/IOS/i) ) {
+                        so='IOS';
+                    } else {
+                        so='PC';
+                    }
+
+                }
+
+                //ya se el so, ahora busco de entre los tokens que tenga si existe el de este so
+                var uuid=rows.uuid;
+                uuid.push({so: tokenpush.tokenpush})
+
+                /*
+                if ( !uuid ) {
+                    uuid = {so: tokenpush.tokenpush};
+                }
+                */
+
+                console.log('uuid=',uuid);
+            } else {
+
+                return res.json({ok:false, txt: 'usuario no encontrado'});
+            }
+        });
+
+        return res.json({ok:true});
+    } else {
+        return res.json({ok:false, txt: 'No tengo el tokenpush'});
+    }
+
+
 });
 
 module.exports = router;

@@ -26,6 +26,14 @@ token: token generado, en el caso de que ok sea true
 error: error generado en el caso de que ok sea false
 txt: texto del error en el case de que ok sea false
 
+Añadir token push
+Ruta: apiV1/addUser/adduuid
+Parametros: token, login, password, tokenpush, so (opcional)
+Metodo: Put
+Desde la parte del cliente se envia el token push recibido en la app y se envia a esta ruta para añadirlo a su configuracion de usuario
+En el caso de que ya tuviera uno, se modifica por el nuevo. Se puede tener un token push por cada so diferente
+Si recibe el parametro de so, se pondra tal como viene, si no viene se intentara extraer de la cabecera
+
 Listado de articulos
 Ruta: apiV1/lista
 Parametros: token
