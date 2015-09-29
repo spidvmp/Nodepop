@@ -24,8 +24,7 @@ router.get('/', function (req, res, next){
 
             }
 
-            //esta autenticado, seguir por otros middlewares
-            req.decoded=decoded;
+            //esta autenticado, seguir
             next();
 
         });
