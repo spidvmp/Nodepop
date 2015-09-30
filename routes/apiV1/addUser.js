@@ -91,6 +91,11 @@ router.put('/adduuid', function(req,res,next){
                 user.tokenpush=updatetoken.tokenpush;
 
                 //actualizo la BD
+                user.updateToken(function(err){
+                    if ( err ){
+                        console.log("Error al update");
+                    }
+                });
 
                 console.log('user ',user);
             } else {
