@@ -56,47 +56,43 @@ router.use(require('./validate'));
 
 router.put('/adduuid', function(req,res,next){
    console.log("estoy en el put");
-    var tokenpush = req.body;
-    var so;
+    //obtengo la informacion del body
+    var updatetoken = req.body;
 
     //compruebo si tengo el tokenpush
-    if ( tokenpush.tokenpush ){
-        console.log('no tengo el token');
+    if ( updatetoken.tokenpush ){
 
         //busco el usuario mediante el login y pass que me pasan
-        User.userExist({login: tokenpush.login, password: tokenpush.password}, function(err, rows){
+        User.userExist({login: updatetoken.login, password: updatetoken.password}, function(err, rows){
             if ( err ){
                 return res.json({ok:false, error:err, txt:'Error al buscar el usuario'});
             }
             //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
             if ( rows.length === 1) {
-                //tengo al usuario, compruebo si me han pasado parametro so
 
-                if ( tokenpush.so ) {
-                    so=tokenpush.so;
+                //tengo al usuario, compruebo si me han pasado parametro so
+                var user = rows[0];
+
+                if ( updatetoken.so ) {
+                    user.so=updatetoken.so;
                 } else {
                     //lo intento sacar de la cabecera
                     if ( req.get('User-Agent').match(/Android/i) ){
-                        so='Android';
+                        user.so='Android';
                     } else if ( req.get('User-Agent').match(/IOS/i) ) {
-                        so='IOS';
+                        user.so='IOS';
                     } else {
-                        so='PC';
+                        user.so='PC';
                     }
 
                 }
 
-                //ya se el so, ahora busco de entre los tokens que tenga si existe el de este so
-                var uuid=rows.uuid;
-                uuid.push({so: tokenpush.tokenpush})
+                //ya se el so, ahora actualizo el token
+                user.tokenpush=updatetoken.tokenpush;
 
-                /*
-                if ( !uuid ) {
-                    uuid = {so: tokenpush.tokenpush};
-                }
-                */
+                //actualizo la BD
 
-                console.log('uuid=',uuid);
+                console.log('user ',user);
             } else {
 
                 return res.json({ok:false, txt: 'usuario no encontrado'});
