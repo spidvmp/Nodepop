@@ -5,7 +5,9 @@ module.exports = {
     //palabra secreta usada para generar el token
     'secretToken': 'jfwneh72n8ohf8327nh',
     //conexion con MongoDB
-    'mongoConex': 'mongodb://192.168.1.41/nodepop',
+    'mongoConex': 'mongodb://192.168.1.36/nodepop',
     //tiempo de expiracion del token en minutos
-    'expiresInMinutes': 120
+    'expiresInMinutes': 120,
+    //numero de articulos por pagina
+    'elementsInPage': 2
 };

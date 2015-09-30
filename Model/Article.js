@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
+var config = require('../config');
 
 //definimos el schemoa del articulo
 var articleSchema = mongoose.Schema({
@@ -21,12 +22,14 @@ var articleSchema = mongoose.Schema({
 
 
 //definimos el motodo estatico lista, muestra los articulos que hay para vender o comprar
-articleSchema.statics.lista=function(criterios, callBack){
-    //hay que enviarlo paginado, asi que en los criterios hay que mostrar la pagina a mostrar
-    var query=Article.find(criterios);
+articleSchema.statics.lista=function(criterios, elem, callBack){
+
+    //hay que enviarlo paginado, asi que en elem indica los registros que hay que mostrar
+    var query=Article.find(criterios).skip(elem).limit(config.elementsInPage);
+    //console.log('elem=',elem, ' ',query);
     //lo ordeno primero por articulos que se venden y luego por nombre, ordeno por -1 porque el true o false lo toma como literal
     //y deberia ordenar por sale=true, la t en mayor que la f de false
-    query.sort({sale:-1, name:-1});
+    query.sort({ name:-1});
 
     //ejecuto y pongo el callback
     query.exec(function(err, rows){
@@ -39,9 +42,6 @@ articleSchema.statics.lista=function(criterios, callBack){
 
 
 };
-
-
-
 
 
 var Article = mongoose.model('Article', articleSchema);
