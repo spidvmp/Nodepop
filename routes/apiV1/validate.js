@@ -23,7 +23,8 @@ router.use( function (req, res, next){
                 return res.status(401).json({ok:false, error:'No tienes permiso'});
 
             }
-
+            //guardo la respuesta para el uso en otros routes
+            req.decoded = decoded;
             //esta autenticado, seguir
             next();
 

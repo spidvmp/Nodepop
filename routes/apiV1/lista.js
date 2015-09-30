@@ -12,7 +12,7 @@ router.get('/',require('./validate'));
 
 
 
-
+/*
 router.get('/', function(req,res){
     console.log("estoy en el gert/");
     var e=0;
@@ -29,9 +29,10 @@ router.get('/', function(req,res){
     });
 
 });
+*/
 
 //listado de paginado
-router.get('/:id', function(req,res){
+router.get('/:id?', function(req,res){
     //paginado. Al numero que se pase se le resta 1 y se multiplica el elementsInPage y esos son los reg que se saltan
     var e=req.params.id;
     e=(e-1)*config.elementsInPage;
@@ -39,7 +40,6 @@ router.get('/:id', function(req,res){
         e=0;
 
     //he de saltar e elementos
-    console.log("estoy en el paginado e=",e);
     Article.lista({}, e, function(err, lista){
         if ( err ){
             //devuelvo error y envio texto en idioma correspondiente

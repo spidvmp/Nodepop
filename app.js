@@ -35,10 +35,6 @@ app.use('/apiV1/lista', require('./routes/apiV1/lista'));
 app.use('/apiV1/tags', require('./routes/apiV1/tags'));
 //app.use('./apiV1/adduser/adduuid', require('./routes/apiV1/adduser'));
 
-
-
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
