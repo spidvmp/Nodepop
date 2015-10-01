@@ -36,7 +36,28 @@ articleSchema.statics.lista=function(req, callBack){
     if ( typeof req.query.name !== 'undefined'){
         filters.name = new RegExp('^'+ req.query.name, "i");;
     }
+    if ( typeof req.query.price !== 'undefined'){
+        //separo el precio a partir del -
+        var p = req.query.price.split('-');
+        console.log('p=',p, ' count=', p.length);
+        if (p.length === 1){
+            //precio exacto
+            filters.price = p[0];
 
+        } else if (p[0] && p[1]) {
+            //tengo los 2 elementos, eso es que tenemos un mayor y un menor
+            console.log("mayor menor");
+            filters.price={'$gte': p[0], '$lte': p[1]};
+        } else if ( p[0] ){
+            //tengo solo el primer elemento, asi que mayor que
+            filters.price={'$gte': p[0]};
+        } else {
+            //tengo segundo elemento, asi que menor que
+            filters.price={'$lte': p[1]};
+        }
+        console.log('filter=',filters);
+
+    }
 
     //configuro los limites
     var start = parseInt(req.query.start) || 0;
