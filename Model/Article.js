@@ -22,14 +22,33 @@ var articleSchema = mongoose.Schema({
 
 
 //definimos el motodo estatico lista, muestra los articulos que hay para vender o comprar
-articleSchema.statics.lista=function(criterios, elem, callBack){
+articleSchema.statics.lista=function(req, callBack){
+
+    //trato los filtros
+    var filters = {};
+
+    if ( typeof req.query.sale !== 'undefined'){
+        filters.sale = req.query.sale;
+    }
+    if ( typeof req.query.tags !== 'undefined'){
+        filters.tags = req.query.tags;
+    }
+    if ( typeof req.query.name !== 'undefined'){
+        filters.name = new RegExp('^'+ req.query.name, "i");;
+    }
+
+
+    //configuro los limites
+    var start = parseInt(req.query.start) || 0;
+    var limit = parseInt(req.query.limit) || config.elementsInPage;
 
     //hay que enviarlo paginado, asi que en elem indica los registros que hay que mostrar
-    var query=Article.find(criterios).skip(elem).limit(config.elementsInPage);
-    //console.log('elem=',elem, ' ',query);
-    //lo ordeno primero por articulos que se venden y luego por nombre, ordeno por -1 porque el true o false lo toma como literal
-    //y deberia ordenar por sale=true, la t en mayor que la f de false
+    var query=Article.find(filters);
+    query.skip(start);
+    query.limit(limit);
     query.sort({ name:-1});
+    //console.log('elem=',elem, ' ',query);
+
 
     //ejecuto y pongo el callback
     query.exec(function(err, rows){

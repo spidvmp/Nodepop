@@ -13,15 +13,10 @@ router.get('/',require('./validate'));
 
 
 //listado de paginado
-router.get('/:id?', function(req,res){
-    //paginado. Al numero que se pase se le resta 1 y se multiplica el elementsInPage y esos son los reg que se saltan
-    var e=req.params.id;
-    e=(e-1)*config.elementsInPage;
-    if ( e <= 0)
-        e=0;
+router.get('/', function(req,res){
 
-    //he de saltar e elementos
-    Article.lista({}, e, function(err, lista){
+    //ejecuto el metodo lista de Article. Le paso el req completo para que saque los datos de los filtros
+    Article.lista(req,  function(err, lista){
         if ( err ){
             //devuelvo error y envio texto en idioma correspondiente
             var txt='error';

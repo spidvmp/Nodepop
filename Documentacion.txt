@@ -36,10 +36,10 @@ Si recibe el parametro de so, se pondra tal como viene, si no viene se intentara
 
 Listado de articulos
 Ruta: apiV1/lista
-Parametros: token
+Parametros: token, tag, sale, art, price, start, limit, sort
 Metodo: en el body, query o headers
 Se comprueba que este autentificado usando el token y se muestra un listado de los articulos que tenemos
-Se devolvera un json con los siguientes datos:
+Se devolvera un json con los siguientes datos: Los parametros se pasan por la query
 ok: true o false si se puede dar la lista o no
 data: listado de los articulos en caso de que ok sea true
 error: error generado en el caso de que ok sea false
