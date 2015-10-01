@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var sha256 = require('sha256');
 var jwt = require('jsonwebtoken');
 var config = require('../../config.js');
 
@@ -18,6 +19,7 @@ router.post('/', function(req, res, next){
     var nuevo = req.body;
 
     var agt= new User(nuevo);
+    agt.password = sha256(agt.password);
 
 
     //primero buscamos a ver si el login existe, si existe no se puede crear otro igual
