@@ -9,5 +9,5 @@ module.exports = {
     //tiempo de expiracion del token en minutos
     'expiresInMinutes': 120,
     //numero de articulos por pagina
-    'elementsInPage': 2
+    'elementsInPage': 6
 };

@@ -28,7 +28,6 @@ router.post('/', function(req, res, next){
         }
         //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
         if ( rows.length === 0) {
-
             //ahora grabamos el nuevo agente en la BD
             agt.save( function(err, creado) {
                 if (err) {
