@@ -12,25 +12,6 @@ router.get('/',require('./validate'));
 
 
 
-/*
-router.get('/', function(req,res){
-    console.log("estoy en el gert/");
-    var e=0;
-    //criterio de busqueda que sean articulos en venta
-    Article.lista({}, 0, function(err, lista, e){
-        if ( err ){
-            //devuelvo error y envio texto en idioma correspondiente
-            var txt='error';
-            return res.json({ok:false, error:err, txt:txt});
-        }
-
-        return res.json({ok:true, data:lista});
-
-    });
-
-});
-*/
-
 //listado de paginado
 router.get('/:id?', function(req,res){
     //paginado. Al numero que se pase se le resta 1 y se multiplica el elementsInPage y esos son los reg que se saltan
