@@ -13,8 +13,6 @@ var userSchema = mongoose.Schema({
     name: String,
     login: String,
     password: String,
-    so: String,
-    tokenpush: String
 });
 
 
@@ -35,6 +33,7 @@ userSchema.statics.userExist=function(criterio, callBack){
 
 };
 
+/*esto ahora no va  aqui
 //defino metodo de instancia para actualizar un registro
 userSchema.methods.updateToken = function(callBack){
     //console.log("UPDATE id=",this._id);
@@ -49,7 +48,7 @@ userSchema.methods.updateToken = function(callBack){
         }
     });
 }
-
+*/
 
 
 //lo exportamos

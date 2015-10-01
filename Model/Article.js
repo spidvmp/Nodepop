@@ -16,7 +16,7 @@ var articleSchema = mongoose.Schema({
     sale: Boolean,
     price: Number,
     pic:  String,
-    tags: Object
+    tags: [String]
 });
 
 
