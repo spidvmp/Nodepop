@@ -46,7 +46,9 @@ router.post('/authenticate', function(req,res){
 
     //buscamos el login y passwd, no diferencio si encuentra el login y el pass es erroneo, si no coincide doy un solo
     // mensaje de error, asi no doy tantas pistas
+
     User.userExist({login: req.body.login, password:req.body.password}, function(err, rows){
+
         if ( err ){
 
             return res.json({ok:false, error:err, txt:'Usuario erroneo'});
@@ -65,6 +67,7 @@ router.post('/authenticate', function(req,res){
 
 
         } else {
+
             if ( rows.length === 0 ) {
 
                 //no encontro el login y pass

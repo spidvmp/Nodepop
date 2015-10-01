@@ -15,7 +15,7 @@ txt: texto del error, en el caso de que ok sea false
 token: se envia el token, en el caso de que ok sea true
 
 Autentificar al usuario
-Ruta: apiV1/authenticate
+Ruta: apiV1/adduser/authenticate
 Parametros: login, password
 Metodo: Post
 Desde la parte del cliente se envian el login y el password (el login es el email)
