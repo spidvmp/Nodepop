@@ -4,6 +4,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var config = require('../../config')
 
+var inter= require('../../lib/Internacional');
+
 //requiere al modelo
 var Article = require('../../Model/Article');
 
@@ -14,6 +16,8 @@ router.get('/',require('./validate'));
 
 //listado de paginado
 router.get('/', function(req,res){
+
+    inter('saludo','en');
 
     //ejecuto el metodo lista de Article. Le paso el req completo para que saque los datos de los filtros
     Article.lista(req,  function(err, lista){

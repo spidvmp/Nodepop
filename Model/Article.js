@@ -39,7 +39,6 @@ articleSchema.statics.lista=function(req, callBack){
     if ( typeof req.query.price !== 'undefined'){
         //separo el precio a partir del -
         var p = req.query.price.split('-');
-        console.log('p=',p, ' count=', p.length);
         if (p.length === 1){
             //precio exacto
             filters.price = p[0];
@@ -55,7 +54,6 @@ articleSchema.statics.lista=function(req, callBack){
             //tengo segundo elemento, asi que menor que
             filters.price={'$lte': p[1]};
         }
-        console.log('filter=',filters);
 
     }
 
