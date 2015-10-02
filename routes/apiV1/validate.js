@@ -4,7 +4,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require('../../Model/User');
 var config = require('../../config');
-var internacional = require ('../../lib/Internacional');
+var inter = require ('../../lib/Internacional');
 
 
 //middleware que comprueba cada peticion y verifica que el token que nos dan es valido, todo lo que llega pasa por aqui
@@ -20,9 +20,8 @@ router.use( function (req, res, next){
         jwt.verify(token,config.secretToken, function(err, decoded){
 
             if (err) {
-                var e = internacional('saludo');
-                console.log('err=',e);
-                return res.status(401).json({ok:false, error:e});
+
+                return res.status(401).json(inter('NO_ACCESS'));
 
             }
             //guardo la respuesta para el uso en otros routes
@@ -34,7 +33,7 @@ router.use( function (req, res, next){
 
     } else {
 
-        return res.status(401).json({ok:false, error:'No tiene permiso.'});
+        return res.status(401).json(inter('NO_ACCESS'));
 
     }
 });
@@ -53,7 +52,7 @@ router.post('/authenticate', function(req,res){
 
         if ( err ){
 
-            return res.json({ok:false, error:err, txt:'Usuario erroneo'});
+            return res.json(inter('ERR_UNKNOW_USER'));
 
         }
 
@@ -73,13 +72,13 @@ router.post('/authenticate', function(req,res){
             if ( rows.length === 0 ) {
 
                 //no encontro el login y pass
-                return res.json({ok:false, error:err, txt:'Usuario erroneo'});
+                return res.json(inter('ERR_UNKNOW_USER'));
 
             }
 
             //han habido mas de una respuesta, esto no deberia pasar, devuelvo error y ademas lo pongo en la consola
             console.log("Encontradas mas de una entrada en usuarios. User=",req.body.login," passwd=",req.body.password);
-            return res.json({ok:false, error:err, txt:'Usuario erroneo'});
+            return res.json(inter('ERR_UNKNOW_USER'));
 
         }
 

@@ -4,6 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var sha256 = require('sha256');
 var jwt = require('jsonwebtoken');
+var inter= require('../../lib/Internacional');
 var config = require('../../config.js');
 
 //llamo al modelo de usuario
@@ -26,14 +27,14 @@ router.post('/', function(req, res, next){
     //ejecuto el metodo estatico definido en Model/User.js
     User.userExist({login: nuevo.login}, function(err, rows){
         if ( err ){
-            return res.json({ok:false, error:err, txt:'Error al buscar el usuario para ver si existe'});
+            return res.json(inter('ERR_FIND_USER'));
         }
         //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
         if ( rows.length === 0) {
             //ahora grabamos el nuevo agente en la BD
             agt.save( function(err, creado) {
                 if (err) {
-                    return res.json({ok: false, error: err, txt: 'No se puede crear'});
+                    return res.json(inter('ERR_SAVE_USER'));
                 }
 
                 //se ha insertado correctamente
@@ -46,7 +47,7 @@ router.post('/', function(req, res, next){
 
         } else {
             //usuario repetido
-            res.json({ok:false, txt:'Usuario ya existe'});
+            res.json(inter('USER_EXIST'));
         }
 
     });
@@ -56,7 +57,7 @@ router.post('/', function(req, res, next){
 router.use(require('./validate'));
 
 router.put('/adduuid', function(req,res,next){
-   console.log("estoy en el put");
+
     //obtengo la informacion del body
     var updatetoken = req.body;
 
@@ -66,7 +67,7 @@ router.put('/adduuid', function(req,res,next){
         //busco el usuario mediante el login y pass que me pasan
         User.userExist({login: updatetoken.login, password: updatetoken.password}, function(err, rows){
             if ( err ){
-                return res.json({ok:false, error:err, txt:'Error al buscar el usuario'});
+                return res.json(inter('ERR_FIND_USER'));
             }
             //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
             if ( rows.length === 1) {
@@ -98,16 +99,16 @@ router.put('/adduuid', function(req,res,next){
                     }
                 });
 
-                console.log('user ',user);
+
             } else {
 
-                return res.json({ok:false, txt: 'usuario no encontrado'});
+                return res.json(inter('ERR_UNKNOW_USER'));
             }
         });
 
         return res.json({ok:true});
     } else {
-        return res.json({ok:false, txt: 'No tengo el tokenpush'});
+        return res.json(inter('ERR_NO_TOKEN'));
     }
 
 

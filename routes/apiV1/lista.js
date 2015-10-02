@@ -17,14 +17,15 @@ router.get('/',require('./validate'));
 //listado de paginado
 router.get('/', function(req,res){
 
-    inter.devuelve('saludo','en');
+    //inter.devuelve('saludo','en');
 
     //ejecuto el metodo lista de Article. Le paso el req completo para que saque los datos de los filtros
     Article.lista(req,  function(err, lista){
         if ( err ){
             //devuelvo error y envio texto en idioma correspondiente
-            var txt='error';
-            return res.json({ok:false, error:err, txt:txt});
+            //conprubeo si tengo idioma
+            var i= req.body.lang ||'es';
+            return res.json(inter.devuelve('ERR_LIST',i));
         }
 
         return res.json({ok:true, data:lista});
