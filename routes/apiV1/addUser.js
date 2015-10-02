@@ -9,6 +9,7 @@ var config = require('../../config.js');
 
 //llamo al modelo de usuario
 var User = require('../../Model/User');
+var PushToken = require('../../Model/PushToken');
 
 
 //el agente nos lo envian por post
@@ -63,10 +64,11 @@ router.put('/adduuid', function(req,res,next){
 
     //compruebo si tengo el tokenpush
     if ( updatetoken.tokenpush ){
-
+        console.log('busco login=',updatetoken.login,' pass=',updatetoken.password);
         //busco el usuario mediante el login y pass que me pasan
         User.userExist({login: updatetoken.login, password: updatetoken.password}, function(err, rows){
             if ( err ){
+                console.log('---------salgo por aqui');
                 return res.json(inter('ERR_FIND_USER'));
             }
             //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
@@ -75,39 +77,49 @@ router.put('/adduuid', function(req,res,next){
                 //tengo al usuario, compruebo si me han pasado parametro so
                 var user = rows[0];
 
+                //creo el modelo Tokenpush
+                var tp= new PushToken();
+
+                //incluyo el id del usuario
+                tp.user = user.id;
+                //pongo el so
                 if ( updatetoken.so ) {
-                    user.so=updatetoken.so;
+                    tp.so=updatetoken.so;
                 } else {
                     //lo intento sacar de la cabecera
                     if ( req.get('User-Agent').match(/Android/i) ){
-                        user.so='Android';
+                        tp.so='android';
                     } else if ( req.get('User-Agent').match(/IOS/i) ) {
-                        user.so='IOS';
-                    } else {
-                        user.so='PC';
+                        tp.so = 'ios';
                     }
 
                 }
-
                 //ya se el so, ahora actualizo el token
-                user.tokenpush=updatetoken.tokenpush;
+                tp.token=updatetoken.tokenpush;
 
                 //actualizo la BD
-                user.updateToken(function(err){
-                    if ( err ){
-                        console.log("Error al update");
+                console.log('a grabar ',tp);
+                tp.save(function(err){
+                    if ( err ) {
+                        console.log('err grabando token',err);
+                        return res.json(inter('ERR_SAVE_TOKEN'));
                     }
+
+
+                    console.log('termino de grabar');
+
                 });
 
-
+                console.log('----salgo por Aqui');
+                return res.json({ok:true});
             } else {
-
+                console.log('---------SAlgo por aqui');
                 return res.json(inter('ERR_UNKNOW_USER'));
             }
         });
 
-        return res.json({ok:true});
     } else {
+        console.log('---------salgo pasdgqui');
         return res.json(inter('ERR_NO_TOKEN'));
     }
 

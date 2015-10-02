@@ -9,10 +9,10 @@ var pushTokenSchema = mongoose.Schema({
     token
     usuario
      */
-    plataforma: {type:String, enum:['ios','android']},
+    so: {type:String, enum:['ios','android']},
     token: String,
     user: String
 });
 
 var PushToken = mongoose.model('PushToken', pushTokenSchema);
-module.expotrs = PushToken;
+module.exports = PushToken;
