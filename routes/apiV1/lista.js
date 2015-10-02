@@ -17,7 +17,7 @@ router.get('/',require('./validate'));
 //listado de paginado
 router.get('/', function(req,res){
 
-    inter('saludo','en');
+    inter.devuelve('saludo','en');
 
     //ejecuto el metodo lista de Article. Le paso el req completo para que saque los datos de los filtros
     Article.lista(req,  function(err, lista){

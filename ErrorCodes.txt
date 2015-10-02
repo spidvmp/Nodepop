@@ -1,0 +1,3 @@
+{
+ "saludo": { "es": "Hola", "en": "hello", code:401 }
+}

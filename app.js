@@ -10,6 +10,38 @@ var routes = require('./routes/index');
 
 var app = express();
 
+/*
+var leeCodigos=require('./lib/leecodigosError');
+var respuesta;
+leeCodigos(function(err,data){
+  if ( err ){
+    respuesta={};
+  }
+  respuesta=data;
+});
+*/
+//app.respuesta=require('./lib/leeCodigosError');
+//var respuesta = codigos.codes();
+//console.log('app.resp=',app.respuesta);
+/*
+var devuelve = require('./lib/leeCodigosError');
+console.log(devuelve);
+var a={};
+devuelve(function(err,data){
+  if (err){
+    console.log('error en app ',err);
+    return;
+  }
+  a=data;
+  console.log('a=',a);
+});
+console.log('termino');
+*/
+
+
+
+//console.log('app----',devuelve('saludo'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
