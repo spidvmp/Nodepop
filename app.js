@@ -62,6 +62,7 @@ app.use('/', routes);
 
 //incluyo la API V1
 app.use('/apiV1/adduser', require('./routes/apiV1/adduser'));
+app.use('/apiV1/adduser/adduuid',require('./routes/apiV1/adduser'));
 app.use('/apiV1/adduser/authenticate', require('./routes/apiV1/validate'));
 app.use('/apiV1/lista', require('./routes/apiV1/lista'));
 app.use('/apiV1/tags', require('./routes/apiV1/tags'));

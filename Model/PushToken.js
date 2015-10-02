@@ -9,7 +9,7 @@ var pushTokenSchema = mongoose.Schema({
     token
     usuario
      */
-    plataforma: {type:String, enum['ios','android']},
+    plataforma: {type:String, enum:['ios','android']},
     token: String,
     user: String
 });
