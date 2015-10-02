@@ -4,6 +4,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require('../../Model/User');
 var config = require('../../config');
+var internacional = require ('../../lib/Internacional');
 
 
 //middleware que comprueba cada peticion y verifica que el token que nos dan es valido, todo lo que llega pasa por aqui
@@ -19,8 +20,9 @@ router.use( function (req, res, next){
         jwt.verify(token,config.secretToken, function(err, decoded){
 
             if (err) {
-
-                return res.status(401).json({ok:false, error:'No tienes permiso'});
+                var e = internacional('saludo');
+                console.log('err=',e);
+                return res.status(401).json({ok:false, error:e});
 
             }
             //guardo la respuesta para el uso en otros routes
