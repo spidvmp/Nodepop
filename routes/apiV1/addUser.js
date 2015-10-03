@@ -74,7 +74,7 @@ router.put('/adduuid', function(req,res,next){
             //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
             if ( rows.length === 1) {
 
-                //tengo al usuario, compruebo si me han pasado parametro so
+                //tengo al usuario,
                 var user = rows[0];
 
                 //creo el modelo Tokenpush
@@ -82,44 +82,60 @@ router.put('/adduuid', function(req,res,next){
 
                 //incluyo el id del usuario
                 tp.user = user._id;
-                //pongo el so
-                if ( updatetoken.so ) {
-                    tp.so=updatetoken.so;
-                } else {
-                    //lo intento sacar de la cabecera
-                    if ( req.get('User-Agent').match(/Android/i) ){
-                        tp.so='android';
-                    } else if ( req.get('User-Agent').match(/IOS/i) ) {
-                        tp.so = 'ios';
-                    }
 
-                }
-                //ya se el so, ahora actualizo el token
-                tp.token=updatetoken.tokenpush;
-
-                //actualizo la BD
-                console.log('a grabar ',tp);
-                tp.save(function(err){
-                    if ( err ) {
-                        console.log('err grabando token',err);
+                //busco si ya tengo algun token para este usuario
+                PushToken.find({'user':user._id}, function(err, rows){
+                    if ( err ){
                         return res.json(inter('ERR_SAVE_TOKEN'));
                     }
+                    //compruebo si tengo o no algun registro de este usuario. Por defecto se pone android
+                    if ( rows.length === 0) {
+                        //es nuevo, pongo el so
+                        if ( updatetoken.so ) {
+                            tp.so=updatetoken.so ||'android';
+                        } else {
+                            //lo intento sacar de la cabecera
+                            if ( req.get('User-Agent').match(/Android/i) ){
+                                tp.so='android';
+                            } else if ( req.get('User-Agent').match(/IOS/i) ) {
+                                tp.so = 'ios';
+                            } else {
+                                //han mandado uno desconocido, porgo por defecto android
+                                tp.so='android';
+                            }
+
+                        }
+                        //ya se el so, ahora actualizo el token
+                        tp.token=updatetoken.tokenpush;
+                        //grabo el tokenpush
+                        tp.save(function(err){
+                            if ( err ) {
+                                console.log('err grabando token',err);
+                                return res.json(inter('ERR_SAVE_TOKEN'));
+                            }
+
+                        });
+                    } else  if ( rows.length === 1 ){
+                        //hay un registro, he de ver si ya tengo el so para modificar el valor del otken o generar uno nuevo
+                        tp=rows[0];
+                        console.log('reg encontrado ', tp);
 
 
-                    console.log('termino de grabar');
-
+                    } else {
+                        //hay mas de un registro, no deberia pasar
+                        return res.json(inter('ERR_SAVE_TOKEN'));
+                    }
                 });
-
-                console.log('----salgo por Aqui');
+                //o grabamos de nuevo o actualizamos, ,el caso es que se hace correctamente
                 return res.json({ok:true});
             } else {
-                console.log('---------SAlgo por aqui');
+                //no se ha encontrado el usuario para actualizar el token
                 return res.json(inter('ERR_UNKNOW_USER'));
             }
         });
 
     } else {
-        console.log('---------salgo pasdgqui');
+        //no me han pasado el token
         return res.json(inter('ERR_NO_TOKEN'));
     }
 
