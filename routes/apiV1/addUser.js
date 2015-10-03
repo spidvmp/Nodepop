@@ -61,6 +61,8 @@ router.put('/adduuid', function(req,res,next){
 
     //obtengo la informacion del body
     var updatetoken = req.body;
+    //creo el modelo Tokenpush
+    var tp= new PushToken();
 
     //compruebo si tengo el tokenpush
     if ( updatetoken.tokenpush ){
@@ -68,7 +70,7 @@ router.put('/adduuid', function(req,res,next){
         //busco el usuario mediante el login y pass que me pasan
         User.userExist({login: updatetoken.login, password: updatetoken.password}, function(err, rows){
             if ( err ){
-                console.log('---------salgo por aqui');
+                //console.log('---------salgo por aqui');
                 return res.json(inter('ERR_FIND_USER'));
             }
             //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
@@ -77,34 +79,34 @@ router.put('/adduuid', function(req,res,next){
                 //tengo al usuario,
                 var user = rows[0];
 
-                //creo el modelo Tokenpush
-                var tp= new PushToken();
-
                 //incluyo el id del usuario
                 tp.user = user._id;
+                //incluyo el so
+                if ( updatetoken.so ) {
+                    tp.so=updatetoken.so ||'android';
+                } else {
+                    //lo intento sacar de la cabecera
+                    if ( req.get('User-Agent').match(/Android/i) ){
+                        tp.so='android';
+                    } else if ( req.get('User-Agent').match(/IOS/i) ) {
+                        tp.so = 'ios';
+                    } else {
+                        //han mandado uno desconocido, porgo por defecto android
+                        tp.so='android';
+                    }
 
-                //busco si ya tengo algun token para este usuario
-                PushToken.find({'user':user._id}, function(err, rows){
+                }
+
+
+                //busco si ya tengo algun token para este usuario con ese so
+                PushToken.find({'user':user._id, 'so': tp.so}, function(err, rows){
                     if ( err ){
                         return res.json(inter('ERR_SAVE_TOKEN'));
                     }
                     //compruebo si tengo o no algun registro de este usuario. Por defecto se pone android
                     if ( rows.length === 0) {
                         //es nuevo, pongo el so
-                        if ( updatetoken.so ) {
-                            tp.so=updatetoken.so ||'android';
-                        } else {
-                            //lo intento sacar de la cabecera
-                            if ( req.get('User-Agent').match(/Android/i) ){
-                                tp.so='android';
-                            } else if ( req.get('User-Agent').match(/IOS/i) ) {
-                                tp.so = 'ios';
-                            } else {
-                                //han mandado uno desconocido, porgo por defecto android
-                                tp.so='android';
-                            }
 
-                        }
                         //ya se el so, ahora actualizo el token
                         tp.token=updatetoken.tokenpush;
                         //grabo el tokenpush
@@ -116,10 +118,28 @@ router.put('/adduuid', function(req,res,next){
 
                         });
                     } else  if ( rows.length === 1 ){
-                        //hay un registro, he de ver si ya tengo el so para modificar el valor del otken o generar uno nuevo
-                        tp=rows[0];
-                        console.log('reg encontrado ', tp);
+                        //hay un registro de usuario y so, actualizo el token
 
+                        tp=rows[0];
+                        tp.token=updatetoken.tokenpush;
+                        console.log('reg encontrado tp=',tp,' actualizo ', updatetoken.tokenpush);
+                        //PushToken.updateTokenPush({'_id': tp._id},{'token': updatetoken.tokenpush});
+                        console.log('_id=',tp._id, ' ');
+                        tp.save(function(err){
+                            if ( err ) {
+                                console.log('No se ha actualizado');
+                                return err;
+                            }
+                            console.log('se supone actualizado');
+
+                        });
+                        /*
+                        tp.update({'_id': tp._id },{$set:{'token': updatetoken.tokenpush}}, function(err){
+                            if ( err ){
+                                return res.json(inter('ERR_SAVE_TOKEN'));
+                            }
+                        });
+                           */
 
                     } else {
                         //hay mas de un registro, no deberia pasar
