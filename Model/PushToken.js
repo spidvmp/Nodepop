@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var config = require('../config');
 
 var pushTokenSchema = mongoose.Schema({
@@ -11,7 +12,7 @@ var pushTokenSchema = mongoose.Schema({
      */
     so: {type:String, enum:['ios','android']},
     token: String,
-    user: String
+    user: [{type: Schema.Types.ObjectId, ref:'User'}]
 });
 
 var PushToken = mongoose.model('PushToken', pushTokenSchema);

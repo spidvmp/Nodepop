@@ -33,23 +33,6 @@ userSchema.statics.userExist=function(criterio, callBack){
 
 };
 
-/*esto ahora no va  aqui
-//defino metodo de instancia para actualizar un registro
-userSchema.methods.updateToken = function(callBack){
-    //console.log("UPDATE id=",this._id);
-    User.update({_id: this._id},{$set:{so: this.so, tokenpush: this.tokenpush}}, function(err, numUpdated){
-        if ( err ){
-            console.log("err updated");
-            return callBack();
-        } else if (numUpdated) {
-            console.log("Actualizados ", numUpdated);
-        } else {
-            console.log("No se actualizo ninguno");
-        }
-    });
-}
-*/
-
 
 //lo exportamos
 var User = mongoose.model('User', userSchema);

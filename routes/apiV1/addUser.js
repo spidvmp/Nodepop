@@ -64,7 +64,7 @@ router.put('/adduuid', function(req,res,next){
 
     //compruebo si tengo el tokenpush
     if ( updatetoken.tokenpush ){
-        console.log('busco login=',updatetoken.login,' pass=',updatetoken.password);
+        //console.log('busco login=',updatetoken.login,' pass=',updatetoken.password);
         //busco el usuario mediante el login y pass que me pasan
         User.userExist({login: updatetoken.login, password: updatetoken.password}, function(err, rows){
             if ( err ){
@@ -81,7 +81,7 @@ router.put('/adduuid', function(req,res,next){
                 var tp= new PushToken();
 
                 //incluyo el id del usuario
-                tp.user = user.id;
+                tp.user = user._id;
                 //pongo el so
                 if ( updatetoken.so ) {
                     tp.so=updatetoken.so;
