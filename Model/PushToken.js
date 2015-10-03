@@ -30,17 +30,5 @@ pushTokenSchema.statics.buscaUser = function ( criterio, callBack){
     });
 };
 
-pushTokenSchema.statics.updateTokenPush = function (criterio, update){
-    //ya se ha comprobado que existe un solo registro asi que utilizo el findandmodify
-    var tpush = db.collection
-    PushToken.findAndModify ({
-        query:criterio,
-        update: update
-    });
-
-};
-
-
-
 var PushToken = mongoose.model('PushToken', pushTokenSchema);
 module.exports = PushToken;

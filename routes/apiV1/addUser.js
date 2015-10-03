@@ -97,7 +97,6 @@ router.put('/adduuid', function(req,res,next){
 
                 }
 
-
                 //busco si ya tengo algun token para este usuario con ese so
                 PushToken.find({'user':user._id, 'so': tp.so}, function(err, rows){
                     if ( err ){
@@ -122,24 +121,13 @@ router.put('/adduuid', function(req,res,next){
 
                         tp=rows[0];
                         tp.token=updatetoken.tokenpush;
-                        console.log('reg encontrado tp=',tp,' actualizo ', updatetoken.tokenpush);
-                        //PushToken.updateTokenPush({'_id': tp._id},{'token': updatetoken.tokenpush});
-                        console.log('_id=',tp._id, ' ');
+
                         tp.save(function(err){
                             if ( err ) {
-                                console.log('No se ha actualizado');
-                                return err;
-                            }
-                            console.log('se supone actualizado');
-
-                        });
-                        /*
-                        tp.update({'_id': tp._id },{$set:{'token': updatetoken.tokenpush}}, function(err){
-                            if ( err ){
                                 return res.json(inter('ERR_SAVE_TOKEN'));
                             }
+
                         });
-                           */
 
                     } else {
                         //hay mas de un registro, no deberia pasar
