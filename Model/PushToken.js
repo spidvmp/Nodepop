@@ -15,6 +15,9 @@ var pushTokenSchema = mongoose.Schema({
     user: [{type: Schema.Types.ObjectId, ref:'User'}]
 });
 
+//genero el indice para buscar por user
+articleSchema.index({ user:1 });
+
 //metodo estatico para buscar si existe
 pushTokenSchema.statics.buscaUser = function ( criterio, callBack){
     //busco un registro en el que este el id del usuario

@@ -19,6 +19,8 @@ var articleSchema = mongoose.Schema({
     tags: [String]
 });
 
+//genero el indice para buscar por nombre, precio y sale
+articleSchema.index({ name: 1, sale: 1, price:1});
 
 
 //definimos el motodo estatico lista, muestra los articulos que hay para vender o comprar
