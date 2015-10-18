@@ -6,7 +6,7 @@ var User = require('../../Model/User');
 var config = require('../../config');
 var inter = require ('../../lib/Internacional');
 
-
+/*
 //middleware que comprueba cada peticion y verifica que el token que nos dan es valido, todo lo que llega pasa por aqui
 router.use( function (req, res, next){
 
@@ -37,7 +37,7 @@ router.use( function (req, res, next){
 
     }
 });
-
+*/
 
 router.post('/authenticate', function(req,res){
     /* una vez que tenemos login y pass, se llama a /authenticate y por post se le envia el login y passwd.
