@@ -12,15 +12,15 @@ var articleSchema = mongoose.Schema({
     pic: nombre del archivo de la foto
     tags: posibles tag que puede tener que son: work, mobile, lifestyle, moto, puede tener mas de uno
      */
-    name: String,
-    sale: Boolean,
-    price: Number,
+    name: { type: String, index:true},
+    sale: { type: Boolean, index:true},
+    price: { type: Number, index:true},
     pic:  String,
-    tags: [String]
+    tags: {type: [String], index:true}
 });
 
 //genero el indice para buscar por nombre, precio y sale
-articleSchema.index({ name: 1, sale: 1, price:1});
+//articleSchema.index({ name: 1, sale: 1, price:1});
 
 
 //definimos el motodo estatico lista, muestra los articulos que hay para vender o comprar

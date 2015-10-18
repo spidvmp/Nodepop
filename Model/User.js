@@ -10,9 +10,9 @@ var userSchema = mongoose.Schema({
     password: password del usuario
     uuid: objeto que contiene los diferentes uuids de los dispositivos desde los que se conecta y el so al que pertenece
      */
-    name: String,
-    login: String,
-    password: String,
+    name: { type: String, index:true},
+    login: {type:  String, index:true},
+    password: String
 });
 
 //genero el indice para buscar por login y password
