@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 var User = require('../../Model/User');
 var config = require('../../config');
 var inter = require ('../../lib/Internacional');
+var sha256 = require ('sha256');
 
 /*
 //middleware que comprueba cada peticion y verifica que el token que nos dan es valido, todo lo que llega pasa por aqui
@@ -47,44 +48,71 @@ router.post('/authenticate', function(req,res){
 
     //buscamos el login y passwd, no diferencio si encuentra el login y el pass es erroneo, si no coincide doy un solo
     // mensaje de error, asi no doy tantas pistas
+    console.log('login=',req.body.login, ' password=', req.body.password);
+    //sobre el modelo User hago una busqueda unica del login
+    User.findOne({login: req.body.login}, function(err, user) {
 
-    User.userExist({login: req.body.login, password:req.body.password}, function(err, rows){
 
-        if ( err ){
+        //User.userExist({login: req.body.login, password:req.body.password}, function(err, rows){
+
+        if (err) {
 
             return res.json(inter('ERR_UNKNOW_USER'));
 
         }
 
-        //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
-        if ( rows.length === 1) {
-
-            //hemos encontrado el registro, generamos el token
-
-            var token = jwt.sign(rows, config.secretToken, {expiresInMinutes:config.expiresInMinutes});
-
-            //se lo pasamos el usuario
-            res.json({ok:true, token:token});
-
-
+        //compruebo si tengo el usuario
+        if (!user) {
+            return
+            return res.json(inter('ERR_UNKNOW_USER'));
         } else {
 
-            if ( rows.length === 0 ) {
-
-                //no encontro el login y pass
+            //compruebo la contraseña. he de codificarla primero
+            var clave = sha256(req.body.password);
+            if (user.password != clave) {
+                return
                 return res.json(inter('ERR_UNKNOW_USER'));
+            } else {
+                //encontramo el usuario con la misma passwd, generamos un token y lo devilvemos
+
+                var token = jwt.sign({user: user}, config.secretToken, {expiresInMinutes: config.expiresInMinutes});
+
+                //se lo pasamos el usuario
+                return res.json({ok: true, token: token});
 
             }
-
-            //han habido mas de una respuesta, esto no deberia pasar, devuelvo error y ademas lo pongo en la consola
-            console.log("Encontradas mas de una entrada en usuarios. User=",req.body.login," passwd=",req.body.password);
-            return res.json(inter('ERR_UNKNOW_USER'));
-
         }
-
     });
+        /*
+         //he de comprbar si rows tiene elementos, si los tiene no se puede crear este usuario, estaria repetido
+         if ( rows.length === 1) {
+
+         //hemos encontrado el registro, generamos el token
+
+         var token = jwt.sign(rows, config.secretToken, {expiresInMinutes:config.expiresInMinutes});
+
+         //se lo pasamos el usuario
+         res.json({ok:true, token:token});
 
 
+         } else {
+
+         if ( rows.length === 0 ) {
+
+         //no encontro el login y pass
+         return res.json(inter('ERR_UNKNOW_USER'));
+
+         }
+
+         //han habido mas de una respuesta, esto no deberia pasar, devuelvo error y ademas lo pongo en la consola
+         console.log("Encontradas mas de una entrada en usuarios. User=",req.body.login," passwd=",req.body.password);
+         return res.json(inter('ERR_UNKNOW_USER'));
+
+         }
+
+         });
+
+         */
 
 });
 

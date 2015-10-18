@@ -2,15 +2,17 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var config = require('../../config')
+var config = require('../../config');
+var jwtAuth = require('../../lib/jwtAuth');
 
 var inter= require('../../lib/Internacional');
 
 //requiere al modelo
 var Article = require('../../Model/Article');
 
-//le hago pasar por el middleware
-router.get('/',require('./validate'));
+//le hago pasar por el middleware de validacion del token
+//router.get('/',require('./validate'));
+router.use(jwtAuth());
 
 
 
