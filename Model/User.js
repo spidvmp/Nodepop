@@ -16,7 +16,7 @@ var userSchema = mongoose.Schema({
 });
 
 //genero el indice para buscar por login y password
-articleSchema.index({ login: 1, password: 1});
+//articleSchema.index({ login: 1, password: 1});
 
 //definimos un metodo estatico para que se busque si existe un login que ya estuviera creado
 userSchema.statics.userExist=function(criterio, callBack){

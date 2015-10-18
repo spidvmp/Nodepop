@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "instalar": "node ./lib/install_db.js",
+    "initdb": "node ./lib/initDB.js"
   },
   "dependencies": {
     "async": "^1.4.2",
