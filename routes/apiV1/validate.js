@@ -63,14 +63,12 @@ router.post('/authenticate', function(req,res){
 
         //compruebo si tengo el usuario
         if (!user) {
-            return
             return res.json(inter('ERR_UNKNOW_USER'));
         } else {
 
             //compruebo la contraseña. he de codificarla primero
             var clave = sha256(req.body.password);
             if (user.password != clave) {
-                return
                 return res.json(inter('ERR_UNKNOW_USER'));
             } else {
                 //encontramo el usuario con la misma passwd, generamos un token y lo devilvemos
