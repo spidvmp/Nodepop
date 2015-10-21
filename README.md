@@ -131,4 +131,3 @@ Listado de los Tags que estan definidos en la aplicacion
 
 ~~~~html
 {"ok":true,"data":["Work","Lifestyle","Mobile","Motor"]}
-
